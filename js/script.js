@@ -1,74 +1,45 @@
 "use strict";
 
-
-
-
-
-// Массив заметок
 let notes = [];
 
 const addNoteBtn = document.querySelector('#add-note');
+lockInput();
+
 
 function addNote(){
     let note = {
-        name: getName(),
-        content: getContent(),
+        name: '',
+        content: '',
         time: getDate(),
-        id: 1
+        id: getUniqId(),
+        selected: true 
     };
 
+
     let addNote = document.createElement('li');
-    addNote.classList.add("note");
+    addNote.classList.add("note","animate__animated","animate__fadeInLeft");
     addNote.innerHTML += `
-                          <div class='note-title'></div>
+                          <div class='note-title'>${note.name}</div>
                           <div class='note-text'>
                               <span class='date'>${note.time}</span>
-                              <span class="text"></span>
+                              <span class="text">${note.content}</span>
                           </div>
                           <img id="del-note" src="../icons/del.svg">`;
                           
-    document.querySelector('.notes-list').append(addNote);
+    document.querySelector('.notes-list').prepend(addNote);
 
     notes.unshift(note);
     console.log(notes);
+    selectedNote();
+
 }
 
 
 addNoteBtn.addEventListener('click', () =>{
     addNote();
+    unlockInput()
     delNote();
 });
-
-// Добавить заметку при клике!!!!
-// addNoteBtn.addEventListener('click', () =>{
-//     let noteTitle = document.querySelector("#note-title").value;
-//     let noteContent = document.querySelector('textarea').value;
-    
-//     let note = {
-//         name: noteTitle,
-//         content: noteContent
-//     };
-
-    
-//     addNote(note);
-    
-
-//     delNote();
-// });
-
-
-// const addNote = (note) =>{
-//     let addNote = document.createElement('li');
-//     addNote.classList.add("note");
-//     addNote.innerHTML += `<button>Delete</button>
-//                           <div class='note-title'>${note.name.substring(0,20)}</div>
-//                           <div class='note-text'>
-//                               <span class='date'>${getDate()}</span>
-//                               <span class="text">${note.content.substring(0,10)}...</span>
-//                           </div>`;
-//     document.querySelector('.notes-list').append(addNote);
-//     console.log(note);
-// };
 
 function delNote(){
     document.querySelectorAll('#del-note').forEach(btn => {
@@ -80,21 +51,83 @@ function delNote(){
 
 
 
-function getName(){
-    let input = document.querySelector('input');
 
-    input.oninput = function() {
-        document.querySelector('.note-title').innerHTML = input.value.substring(0,25);
-    };
+// function getName(){
+//     let input = document.querySelector('input');
+    
+//     input.oninput = function() {
+//         document.querySelector('.note-title').innerHTML = input.value.substring(0,25);
+//     }
+// };
+
+// function getContent(){
+//     let content = document.querySelector('textarea');
+
+//     content.oninput = function() {
+//         document.querySelector('.text').innerHTML = content.value.substring(0,15);
+//     };
+// }
+
+
+let input = document.querySelector('input');
+
+input.oninput = function() {
+    document.querySelector('.note-title').innerHTML = input.value.substring(0,25);
 }
 
-function getContent(){
-    let content = document.querySelector('textarea');
+let content = document.querySelector('textarea');
 
-    content.oninput = function() {
-        document.querySelector('.text').innerHTML = content.value.substring(0,20);
-    };
+content.oninput = function() {
+    document.querySelector('.text').innerHTML = content.value.substring(0,15);
+};
+
+
+
+
+
+
+
+function getUniqId(){
+    return new Date().getTime().toString();
 }
+function selectedNote(){
+    const tabs = document.querySelectorAll('li'),
+        tabsContent = document.querySelectorAll('.notes-content'),
+        tabsParent = document.querySelector('.notes-list');
+
+    function hideTabContent(){
+        tabsContent.forEach(item => {
+            // item.style.display = "none";
+        });
+
+        tabs.forEach(item =>{
+            item.classList.remove("note_selected");
+        });
+    }
+
+    function showTabContent(i = 0){
+        // tabsContent[i].style.display = "block";
+        tabs[i].classList.add("note_selected");
+    }
+    hideTabContent();
+    showTabContent();
+
+    tabsParent.addEventListener('click', (event)=>{
+        const target = event.target;
+        
+        if(target && target.classList.contains('note')){
+            tabs.forEach((item,i)=>{
+                if(target == item){
+                    hideTabContent();
+                    showTabContent(i);
+                }
+            })
+        }
+    });
+}
+
+
+
 
 
 // Получить дату создания заметки!
@@ -105,21 +138,22 @@ function getDate(){
     let month = String(date.getMonth() + 1).padStart(2, '0');
     let year = date.getFullYear();
     let hours = date.getHours();
-    let minutes = date.getMinutes();
+    let minutes = String(date.getMinutes()).padStart(2, '0');
 
-    if(minutes < 10){
-        minutes = "0" + minutes;
-    }
-
-    return `${day}.${month}.${year}  ${hours}:${minutes}`;
+    return `${day}.${month}.${year} ${hours}:${minutes}`;
 }
 
 
+function lockInput(){
+    document.querySelector('#note-title').disabled = true;
+    document.querySelector('textarea').disabled = true;
+}
 
 
+function unlockInput(){
+    document.querySelector('#note-title').disabled = false;
+    document.querySelector('textarea').disabled = false;
 
-
-
-
-
-
+    let locked = document.querySelector('.locker');
+    locked.style.display = "none";
+}

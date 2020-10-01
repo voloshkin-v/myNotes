@@ -2,10 +2,13 @@
     box-sizing: border-box
     padding: 0
     margin: 0
+    font-family: 'Peddana', serif
 
 ::-webkit-scrollbar
     width: 0
 
+.animate__animated.animate__fadeInLeft 
+    --animate-duration: 0.4s;
 
 .wrapper
     display: flex
@@ -19,11 +22,15 @@
         cursor: pointer
         display: block
         margin: 15px auto
-        border: none
-        width: 100px
+        border: 2px solid #c8c8ca
+        width: 120px
         height: 40px
-        background-color: #c8c8ca
-        color: #000
+        background-color: #1d1c23
+        color: #c8c8ca
+        font-size: 22px
+        border-radius: 20px
+        text-transform: uppercase
+        opacity: 
         &:active, &:focus
             outline: none
 
@@ -32,32 +39,32 @@
         cursor: pointer
         img
             display: none
-        
-               
         .note
             padding: 15px 0 10px 30px
             color: #c8c8ca
-            height: 75px    
-            position: relative    
+            height: 90px    
+            position: relative 
+            &_selected
+                background-color: #c99420  
             &:hover
                 background-color: #c99420
                 img
                     position: absolute
-                    top: 20px
+                    top: 27px
                     right: 15px
                     display: block
                     width: 30px
             .note-title
-                font-size: 20px
+                font-size: 25px
+                margin-bottom: 10px
             .note-text
                 display: flex
-                margin-top: 7px
-                font-size: 15px
+                margin-top: 10px
+                font-size: 20px
                 position: absolute
                 bottom: 10px
                 .text
                     margin-left: 25px
-                
             button
                 cursor: pointer
                 border: none
@@ -71,30 +78,34 @@
                 transform: translateY(-50%)
                 &:active, &:focus
                     outline: none
-                    
             
 .notes-content
     height: 100vh
     width: 100%
     border: 1px solid black
-    .wrapper
-        display: flex
-        justify-content: space-between
-        input
-            width: 100%
-            height: 40px 
-            padding: 5px 0 10px 15px
-            background-color: #282829  
-            color: #c8c8ca
-            outline: none
-            border: 1px solid black
-            font-size: 20px
+    input
+        width: 100%
+        height: 40px 
+        padding: 5px 0 10px 15px
+        background-color: #282829  
+        color: #c8c8ca
+        outline: none
+        border: 1px solid black
+        font-size: 35px
     textarea
         background-color: #282829 
         outline: none
         height: 713px
         border: 1px solid black
         width: 100%
-        font-size: 15px
+        font-size: 30px
         color: #c8c8ca
         padding: 15px
+    .locker
+        position: relative
+        img
+            width: 200px
+            position: absolute
+            left: 50%
+            transform: translateX(-50%)
+            top: 250px
